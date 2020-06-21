@@ -43,5 +43,6 @@ obterUsuario()
     })
     .then(endereco => {
         console.log(JSON.stringify(endereco))
+        throw new Error(`Intercepted this error exception`)
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err.message))
