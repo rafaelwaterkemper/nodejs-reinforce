@@ -34,15 +34,26 @@ function obterEndereco(idUsuario) {
 
 obterUsuario()
     .then(usuario => {
-        console.log(JSON.stringify(usuario))
-        return obterTelefone();
+        return obterTelefone()
+            .then(telefone => {
+                return {
+                    usuario: usuario,
+                    telefone: telefone
+                }
+            });
     })
-    .then(telefone => {
-        console.log(JSON.stringify(telefone))
-        return obterEndereco();
+    .then(usuarioWithTelefone => {
+        return obterEndereco()
+            .then(endereco => {
+                return {
+                    usuario: usuarioWithTelefone.usuario,
+                    telefone: usuarioWithTelefone.telefone,
+                    endereco: endereco
+                }
+            });
     })
-    .then(endereco => {
-        console.log(JSON.stringify(endereco))
+    .then(usuarioFullfilled => {
+        console.log(JSON.stringify(usuarioFullfilled))
         throw new Error(`Intercepted this error exception`)
     })
     .catch(err => console.log(err.message))

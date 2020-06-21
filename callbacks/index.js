@@ -1,3 +1,5 @@
+const util = require('util')
+
 function obterUsuario(callback) {
     setTimeout(() => {
         return callback(null, {
@@ -49,3 +51,12 @@ obterUsuario(function (err, usuario) {
         })
     })
 });
+
+//for use promisify, function should follow callback pattern fn(err, result)
+
+const obterUsuarioAsync = util.promisify(obterUsuario);
+
+obterUsuarioAsync()
+    .then(usuario => {
+        console.log(`User from async fn using promisify: `, JSON.stringify(usuario))
+    })
