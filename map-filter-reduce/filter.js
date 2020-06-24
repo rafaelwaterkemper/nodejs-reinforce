@@ -1,4 +1,4 @@
-const findHeroes = require('./service')
+const findHeroes = require('../tests-mocha-nock/service')
 
 Array.prototype.myFilter = function (filter) {
     let newArray = []
