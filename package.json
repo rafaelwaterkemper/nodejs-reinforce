@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
+  "module": "./file-system/interface.js",
   "scripts": {
     "test": "mocha ./tests-mocha-nock --timeout 5000"
   },
@@ -10,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
+    "commander": "^5.1.0",
     "mocha": "^8.0.1",
     "nock": "^12.0.3"
   }
