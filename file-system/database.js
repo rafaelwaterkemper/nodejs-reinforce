@@ -14,11 +14,9 @@ class Database {
     
     async save(heroe) {
         try {
-            const fileContent = await this.readHeroesFile()
-            const heroes = JSON.parse(fileContent.toString('utf-8'))
+            const heroes = await this.readHeroesFile()
     
-            heroes[heroes.length - 1].id;
-            this.generateSequencial()
+            this.sequencial = heroes[heroes.length - 1].id + 1
             
             let heroeComId = {
                 ...heroe,
@@ -37,21 +35,23 @@ class Database {
             console.log('Error to save new heroe', err)
         }
     }
+
+    async delete() {
+        //implement
+    }
+
+    async update() {
+        //implement
+    }
     
     async findAll() {
-        const fileContent = await this.readHeroesFile()
-        return JSON.parse(fileContent.toString('utf-8'))
+        return await this.readHeroesFile()
     }
     
     async find(name) {
-        const fileContent = await this.readHeroesFile()
-        const json = JSON.parse(fileContent.toString('utf-8'))
+        const heroes = await this.readHeroesFile()
     
-        return json.filter(heroe => heroe.name === name)
-    }
-    
-    generateSequencial() {
-        return ++this.sequencial
+        return heroes.filter(heroe => heroe.name === name)
     }
     
     async saveHeroesFile(heroes) {
@@ -59,7 +59,8 @@ class Database {
     }
     
     async readHeroesFile() {
-        return await readFileAsync(this.FILE_PATH);
+        const fileContent = await readFileAsync(this.FILE_PATH);
+        return JSON.parse(fileContent.toString('utf-8'))
     }
 }
 

@@ -1,1 +1,7 @@
-[{"id":1,"name":"Flash","skill":"Speed"},{"name":"Nodezera","skill":"single thread","id":2},{"name":"Nodezera","skill":"single thread","id":3},{"name":"Nodezera","skill":"single thread","id":4},{"name":"Nodezera","skill":"single thread","id":5},{"name":"Nodezera","skill":"single thread","id":1},{"name":"Nodezera","skill":"single thread","id":1}]
+[
+    {
+        "id": 1,
+        "name": "Flash",
+        "skill": "Speed"
+    }
+]
