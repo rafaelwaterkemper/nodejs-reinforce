@@ -16,7 +16,7 @@ class Database {
         try {
             const heroes = await this.readHeroesFile()
     
-            this.sequencial = heroes[heroes.length - 1].id + 1
+            this.sequencial = heroes[0] ? heroes[heroes.length - 1].id + 1 : 1
             
             let heroeComId = {
                 ...heroe,
@@ -36,12 +36,41 @@ class Database {
         }
     }
 
-    async delete() {
-        //implement
+    async delete(id) {
+        const heroes = await this.readHeroesFile()
+
+        if(!id) {
+            await this.saveHeroesFile([])
+            return true
+        }
+
+        const position = heroes.findIndex(heroe => heroe.id === id)
+        
+        if(position === -1) {
+            throw new Error('Heroe not found')
+        }
+
+        await this.saveHeroesFile(heroes.splice(position, 1))
+        return true
     }
 
-    async update() {
-        //implement
+    async update(update) {
+        const heroes = await this.readHeroesFile()
+        const position = heroes.findIndex(heroe => heroe.id === update.id)
+        
+        if(position === -1) {
+            throw new Error('Heroe not found')
+        }
+
+        heroes[position] = {
+            ...heroes[position],
+            name: update.name,
+            skill: update.skill
+
+        }
+
+        await this.saveHeroesFile(heroes)
+        return heroes[position]
     }
     
     async findAll() {
