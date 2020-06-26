@@ -2,11 +2,7 @@ const {
     deepEqual, ok
 } = require('assert')
 
-const {
-    find,
-    save
-} = require('./database')
-const { exists } = require('fs')
+const repository = require('./database')
 
 describe('Suite test for read operation', () => {
     it('should read heroe from file', async () => {
@@ -18,7 +14,7 @@ describe('Suite test for read operation', () => {
             "skill": "Speed"
         }
 
-        const [result] = await find(filterHeroe) //DESTRUCTURING TO GET FIRST POSITION //[first, second] to get more positions
+        const [result] = await repository.find(filterHeroe) //DESTRUCTURING TO GET FIRST POSITION //[first, second] to get more positions
         deepEqual(EXPECTED, result)
     })
 
@@ -29,7 +25,7 @@ describe('Suite test for read operation', () => {
             "skill": "single thread"
         }
 
-        const saved = await save(newHeroe)
+        const saved = await repository.save(newHeroe)
         ok(saved.id)
     })
 })
