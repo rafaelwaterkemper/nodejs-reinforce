@@ -5,6 +5,8 @@ import { database } from './database.mjs'
 import Heroi from './heroi.mjs'
 
 async function main() {
+    console.log(`process.argv ${JSON.stringify(process.argv)}`);
+
     Commander.version('v1')
         .option('-l, --listar', 'Lista os heróis do arquivo')
         .option('-c, --cadastrar [value]', 'Lista os heróis do arquivo')
