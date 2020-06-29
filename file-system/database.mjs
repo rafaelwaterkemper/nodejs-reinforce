@@ -1,9 +1,9 @@
-const { readFile, writeFile } = require('fs')
-const { promisify } = require('util')
+import fs from 'fs'
+import util from 'util'
 
 const [readFileAsync, writeFileAsync] = [
-    promisify(readFile),
-    promisify(writeFile)
+    util.promisify(fs.readFile),
+    util.promisify(fs.writeFile)
 ]
 
 class Database {
@@ -11,13 +11,13 @@ class Database {
         this.FILE_PATH = filePath
         this.sequencial = 0;
     }
-    
+
     async save(heroe) {
         try {
             const heroes = await this.readHeroesFile()
-    
+
             this.sequencial = heroes[0] ? heroes[heroes.length - 1].id + 1 : 1
-            
+
             let heroeComId = {
                 ...heroe,
                 id: this.sequencial
@@ -29,7 +29,7 @@ class Database {
             ]
 
             await this.saveHeroesFile(updatedFile)
-    
+
             return heroeComId
         } catch (err) {
             console.log('Error to save new heroe', err)
@@ -39,14 +39,14 @@ class Database {
     async delete(id) {
         const heroes = await this.readHeroesFile()
 
-        if(!id) {
+        if (!id) {
             await this.saveHeroesFile([])
             return true
         }
 
         const position = heroes.findIndex(heroe => heroe.id === id)
-        
-        if(position === -1) {
+
+        if (position === -1) {
             throw new Error('Heroe not found')
         }
 
@@ -57,8 +57,8 @@ class Database {
     async update(update) {
         const heroes = await this.readHeroesFile()
         const position = heroes.findIndex(heroe => heroe.id === update.id)
-        
-        if(position === -1) {
+
+        if (position === -1) {
             throw new Error('Heroe not found')
         }
 
@@ -72,27 +72,31 @@ class Database {
         await this.saveHeroesFile(heroes)
         return heroes[position]
     }
-    
+
     async findAll() {
         return await this.readHeroesFile()
     }
-    
+
     async find(name) {
         const heroes = await this.readHeroesFile()
-    
+
         return heroes.filter(heroe => heroe.name === name)
     }
-    
+
     async saveHeroesFile(heroes) {
         await writeFileAsync(this.FILE_PATH, JSON.stringify(heroes))
     }
-    
+
     async readHeroesFile() {
         const fileContent = await readFileAsync(this.FILE_PATH);
+
+        if (!fileContent.length)
+            return []    
+        
         return JSON.parse(fileContent.toString('utf-8'))
     }
 }
 
 
 
-module.exports = new Database('./heroes.json')
+export const database = new Database('./heroes.json')
