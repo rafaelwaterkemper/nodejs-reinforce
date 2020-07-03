@@ -4,7 +4,7 @@ import { database } from './database.mjs'
 
 import Heroi from './heroi.mjs'
 
-async function main() {
+export async function main() {
     console.log(`process.argv ${JSON.stringify(process.argv)}`);
 
     Commander.version('v1')
@@ -32,5 +32,3 @@ async function main() {
         console.log('Falha na execução do comando: ', err)
     }
 }
-
-main()

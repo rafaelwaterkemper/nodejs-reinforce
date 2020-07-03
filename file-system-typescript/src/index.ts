@@ -1,0 +1,6 @@
+class ContextStrategy {
+    constructor() {
+        
+    }
+
+}
