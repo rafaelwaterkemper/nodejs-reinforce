@@ -2,9 +2,9 @@ import { Animal } from './Animal'
 import IEntity from '../persistence/IEntity';
 
 export enum Raca {
-    PITBULL,
-    PUGGIE,
-    POODLE
+    PITBULL = 'PITBULL',
+    PUGGIE = 'PUGGIE',
+    POODLE = 'POODLE'
 }
 
 export interface ICachorro {
