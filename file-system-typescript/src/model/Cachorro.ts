@@ -24,10 +24,6 @@ export class Cachorro extends Animal {
         this._raca = cachorro.raca; 
     }
 
-    latir() {
-        console.log(`Latido do tipo ${this.raca}`)
-    }
-
     get nome(): string{
         return this._nome;
     }
