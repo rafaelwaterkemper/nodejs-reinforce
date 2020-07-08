@@ -1,5 +1,4 @@
 import { Animal } from './Animal'
-import IEntity from '../persistence/IEntity';
 
 export enum Raca {
     PITBULL = 'PITBULL',
