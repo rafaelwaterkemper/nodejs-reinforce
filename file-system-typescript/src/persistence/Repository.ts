@@ -1,6 +1,8 @@
-export default interface Repository<T> {
-    save(entity: T): void,
-    find(id: Number): T,
-    findAll(): Array<T>,
+import IEntity from './IEntity';
+
+export default interface Repository {
+    save<T extends IEntity>(entity: T): void,
+    find(id: Number): IEntity,
+    findAll<T extends IEntity>(): Array<T>,
     delete(id: Number): Boolean
 }

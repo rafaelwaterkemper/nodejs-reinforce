@@ -1,4 +1,6 @@
-export abstract class Animal {
+import IEntity from '../persistence/IEntity'
+
+export class Animal implements IEntity {
     
     public weight: number;
     public feets: number;
@@ -7,4 +9,9 @@ export abstract class Animal {
         this.weight = weight;
         this.feets = feets;
     }
+
+    getId(): number {
+        return 1;
+    }
+
 }

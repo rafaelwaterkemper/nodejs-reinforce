@@ -1,4 +1,5 @@
 import { Animal } from './Animal'
+import IEntity from '../persistence/IEntity';
 
 export enum Raca {
     PITBULL,
@@ -14,17 +15,34 @@ export interface ICachorro {
 }
 
 export class Cachorro extends Animal {
-    private nome: string;
-    private raca: Raca;
+    private _nome: string;
+    private _raca: Raca;
     
     constructor(cachorro: ICachorro) {
         super(cachorro.weight, cachorro.feets);
-        this.nome = cachorro.nome;
-        this.raca = cachorro.raca; 
+        this._nome = cachorro.nome;
+        this._raca = cachorro.raca; 
     }
 
     latir() {
         console.log(`Latido do tipo ${this.raca}`)
+    }
+
+    get nome(): string{
+        return this._nome;
+    }
+
+    get raca(): Raca {
+        return this._raca;
+    }
+
+    toString(): string {
+        return `
+            nome: ${this.nome}
+            raca: ${this.raca}
+            peso: ${this.weight},
+            patas: ${this.feets}
+        `
     }
 }
 
