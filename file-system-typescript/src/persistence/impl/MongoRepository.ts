@@ -19,4 +19,8 @@ export default class MongoRepository implements Repository {
     delete(id: number): Boolean {
         return true;
     };
+
+    isConnected(): Promise<boolean> {
+        return Promise.resolve(true);
+    }
 }

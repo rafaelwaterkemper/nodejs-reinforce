@@ -22,4 +22,8 @@ export default class BasicRepository implements Repository {
     delete(id: number): Boolean {
         return this.#repository.delete(id);
     };
+
+    isConnected(): Promise<boolean> {
+        return this.#repository.isConnected();
+    }
 }
