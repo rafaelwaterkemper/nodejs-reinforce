@@ -11,10 +11,9 @@ import {
     Optional
 } from 'sequelize'
 
-
 import { Films, FilmsFactory } from './Films'
 
-enum EYECOLOR {
+export enum EYECOLOR {
     GREEN = "GREEN",
     BLUE = "BLUE"
 }
@@ -29,8 +28,9 @@ interface HeroeAttributes {
 
 interface HeroeCreationAttributes extends Optional<HeroeAttributes, "id"> { }
 
-class HeroeInstance extends Model<HeroeAttributes, HeroeCreationAttributes>
+export const Heroe = class HeroeInstance extends Model<HeroeAttributes, HeroeCreationAttributes>
     implements HeroeAttributes {
+
     public id!: number;
     public name!: string;
     public height!: number;
@@ -59,9 +59,9 @@ class HeroeInstance extends Model<HeroeAttributes, HeroeCreationAttributes>
     };
 }
 
-export const HeroeFactory = (sequelize: Sequelize): Model<HeroeAttributes, HeroeCreationAttributes> => {
-
-    const Heroe = HeroeInstance.init(
+export const associate = async function(sequelize: Sequelize) {
+    
+    await Heroe.init(
         {
             id: {
                 type: DataTypes.INTEGER.UNSIGNED,
@@ -91,15 +91,13 @@ export const HeroeFactory = (sequelize: Sequelize): Model<HeroeAttributes, Heroe
         }
     );
 
+    await Heroe.sync();
+
     // Here we associate which actually populates out pre-declared `association` static and other methods.
-    FilmsFactory(sequelize)
-    HeroeInstance.hasMany(Films, {
-        sourceKey: "id",
-        foreignKey: "heroeId",
-        as: "films", // this determines the name in `associations`!
-    });
-
-    return Heroe
+    // await FilmsFactory(sequelize)
+    // await Heroe.hasMany(Films, {
+    //     sourceKey: "id",
+    //     foreignKey: "heroeId",
+    //     as: "films", // this determines the name in `associations`!
+    // });
 }
-
-
