@@ -11,7 +11,7 @@ import {
     Optional
 } from 'sequelize'
 
-import { Films, FilmsFactory } from './Films'
+import { Films, associate as FilmsAssociate} from './Films'
 
 export enum EYECOLOR {
     GREEN = "GREEN",
@@ -91,13 +91,15 @@ export const associate = async function(sequelize: Sequelize) {
         }
     );
 
+    // Here we associate which actually populates out pre-declared `association` static and other methods.
+    await FilmsAssociate(sequelize);
+    await Heroe.hasMany(Films, {
+        sourceKey: "id",
+        foreignKey: "heroeId",
+        as: "films", // this determines the name in `associations`!
+    });
+
     await Heroe.sync();
 
-    // Here we associate which actually populates out pre-declared `association` static and other methods.
-    // await FilmsFactory(sequelize)
-    // await Heroe.hasMany(Films, {
-    //     sourceKey: "id",
-    //     foreignKey: "heroeId",
-    //     as: "films", // this determines the name in `associations`!
-    // });
+    
 }

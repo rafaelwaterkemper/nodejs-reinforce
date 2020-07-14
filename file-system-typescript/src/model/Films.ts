@@ -20,8 +20,8 @@ export class Films extends Model<FilmsAttributes, FilmsCreationAttributes>
     public readonly updatedAt!: Date;
 }
 
-export const FilmsFactory = (sequelize: Sequelize): Model<FilmsAttributes, FilmsCreationAttributes> => {
-    return Films.init(
+export const associate = async(sequelize:Sequelize) => {
+    Films.init(
         {
             id: {
                 type: DataTypes.INTEGER.UNSIGNED,
@@ -46,4 +46,5 @@ export const FilmsFactory = (sequelize: Sequelize): Model<FilmsAttributes, Films
             tableName: "films",
         }
     )
+    Films.sync()
 };
