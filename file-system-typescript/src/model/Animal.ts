@@ -1,3 +1,4 @@
+import { Sequelize } from 'sequelize'
 import IEntity from '../persistence/IEntity'
 
 export class Animal implements IEntity {
@@ -10,8 +11,9 @@ export class Animal implements IEntity {
         this.feets = feets;
     }
 
-    getId(): number {
+    getId(): number {   
         return 1;
     }
 
 }
+

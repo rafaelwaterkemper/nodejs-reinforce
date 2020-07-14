@@ -5,7 +5,6 @@ import { Cachorro, Raca } from './../../model/Cachorro'
 
 export default class PostgresRepository implements Repository {
 
-
     private _sequelize: Sequelize
 
     constructor() {
@@ -30,7 +29,7 @@ export default class PostgresRepository implements Repository {
         console.log('Save by mongo repository')
     };
     find(id: Number): IEntity {
-        return new Cachorro({ "nome": 'Bob', "raca": Raca.POODLE, "weight": 10, "feets": 10 })
+        return new Cachorro({ "nome": 'Tiao', "raca": Raca.POODLE, "weight": 10, "feets": 10 })
     };
     findAll<T extends IEntity>(): T[] {
         return []
