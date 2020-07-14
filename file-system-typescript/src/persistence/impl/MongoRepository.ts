@@ -1,6 +1,5 @@
 import Repository from './../Repository';
 import IEntity from './../IEntity'
-import { Cachorro, Raca } from './../../model/Cachorro'
 
 export default class MongoRepository implements Repository {
 
@@ -10,8 +9,8 @@ export default class MongoRepository implements Repository {
     save<T extends IEntity>(entity: T): void {
         console.log('Save by mongo repository')
     };
-    find(id: Number): IEntity {
-        return new Cachorro({ "nome": 'Bob', "raca": Raca.POODLE, "weight": 10, "feets": 10 })
+    find(id: Number): IEntity | any {
+        return {}
     };
     findAll<T extends IEntity>(): T[] {
         return []

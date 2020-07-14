@@ -1,8 +1,12 @@
 import BasicRepository from './persistence/BasicRepository'
 import PostgresRepository from './persistence/impl/PostgresRepository'
-import { Cachorro } from './model/Cachorro'
+import { HeroeFactory } from './model/Heroe'
+import { Sequelize } from 'sequelize'
 
-const basicRepository = new BasicRepository(new PostgresRepository())
 
-const cachorro = <Cachorro>basicRepository.find(1);
-console.log(cachorro.toString());
+
+const sequelize = new Sequelize('postgres://waterkemper:waterkemper@localhost:5432/heroes')
+
+
+const basicRepository = new BasicRepository(new PostgresRepository(sequelize))
+const Heroe = HeroeFactory(sequelize);

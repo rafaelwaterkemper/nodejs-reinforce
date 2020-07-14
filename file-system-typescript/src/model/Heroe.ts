@@ -1,7 +1,6 @@
 import {
     Sequelize,
     Model,
-    ModelDefined,
     DataTypes,
     HasManyGetAssociationsMixin,
     HasManyAddAssociationMixin,
@@ -9,12 +8,15 @@ import {
     Association,
     HasManyCountAssociationsMixin,
     HasManyCreateAssociationMixin,
-    Optional, INTEGER
+    Optional
 } from 'sequelize'
 
+
+import { Films, FilmsFactory } from './Films'
+
 enum EYECOLOR {
-    GREEN,
-    BLUE
+    GREEN = "GREEN",
+    BLUE = "BLUE"
 }
 
 interface HeroeAttributes {
@@ -27,7 +29,7 @@ interface HeroeAttributes {
 
 interface HeroeCreationAttributes extends Optional<HeroeAttributes, "id"> { }
 
-class Heroe extends Model<HeroeAttributes, HeroeCreationAttributes>
+class HeroeInstance extends Model<HeroeAttributes, HeroeCreationAttributes>
     implements HeroeAttributes {
     public id!: number;
     public name!: string;
@@ -53,46 +55,51 @@ class Heroe extends Model<HeroeAttributes, HeroeCreationAttributes>
     public readonly films?: Films[]; // Note this is optional since it's only populated when explicitly requested in code
 
     public static associations: {
-        films: Association<Heroe, Films>;
+        films: Association<HeroeInstance, Films>;
     };
 }
 
+export const HeroeFactory = (sequelize: Sequelize): Model<HeroeAttributes, HeroeCreationAttributes> => {
 
-
-Heroe.init(
-    {
-        id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            autoIncrement: true,
-            primaryKey: true,
+    const Heroe = HeroeInstance.init(
+        {
+            id: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                autoIncrement: true,
+                primaryKey: true,
+            },
+            name: {
+                type: new DataTypes.STRING(128),
+                allowNull: false,
+            },
+            height: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+            },
+            mass: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            },
+            eyeColor: {
+                type: DataTypes.ENUM("GREEN", "BLUE"),
+                allowNull: true
+            }
         },
-        name: {
-            type: new DataTypes.STRING(128),
-            allowNull: false,
-        },
-        height: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
-        mass: {
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
-        eyeColor: {
-            type: DataTypes.ENUM,
-            allowNull: true
+        {
+            tableName: "heroes",
+            sequelize, // passing the `sequelize` instance is required
         }
-    },
-    {
-        tableName: "heroes",
-        sequelize, // passing the `sequelize` instance is required
-    }
-);
+    );
 
-// Here we associate which actually populates out pre-declared `association` static and other methods.
-Heroe.hasMany(Films, {
-    sourceKey: "id",
-    foreignKey: "heroe_id",
-    as: "films", // this determines the name in `associations`!
-});
+    // Here we associate which actually populates out pre-declared `association` static and other methods.
+    FilmsFactory(sequelize)
+    HeroeInstance.hasMany(Films, {
+        sourceKey: "id",
+        foreignKey: "heroeId",
+        as: "films", // this determines the name in `associations`!
+    });
+
+    return Heroe
+}
+
 

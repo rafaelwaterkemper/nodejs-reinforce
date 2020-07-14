@@ -1,8 +1,8 @@
-import { DataTypes, Optional, Model } from "sequelize/types";
+import { DataTypes, Optional, Model, Sequelize } from "sequelize";
 
-interface FilmsAttributes {
+export interface FilmsAttributes {
     id: number;
-    heroe: number;
+    heroeId: number;
     name: string;
     date: Date;
 }
@@ -12,7 +12,7 @@ interface FilmsCreationAttributes extends Optional<FilmsAttributes, "id"> { }
 export class Films extends Model<FilmsAttributes, FilmsCreationAttributes>
     implements FilmsAttributes {
     public id!: number;
-    public heroe!: number;
+    public heroeId!: number;
     public name!: string;
     public date!: Date;
 
@@ -20,28 +20,30 @@ export class Films extends Model<FilmsAttributes, FilmsCreationAttributes>
     public readonly updatedAt!: Date;
 }
 
-Films.init(
-    {
-        id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            autoIncrement: true,
-            primaryKey: true,
+export const FilmsFactory = (sequelize: Sequelize): Model<FilmsAttributes, FilmsCreationAttributes> => {
+    return Films.init(
+        {
+            id: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                autoIncrement: true,
+                primaryKey: true,
+            },
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            heroeId: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                allowNull: false
+            },
+            date: {
+                type: DataTypes.DATE,
+                allowNull: false,
+            },
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        heroe: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        date: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-    },
-    {
-        sequelize,
-        tableName: "films",
-    }
-);
+        {
+            sequelize,
+            tableName: "films",
+        }
+    )
+};
