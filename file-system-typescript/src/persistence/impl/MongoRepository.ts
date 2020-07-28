@@ -6,6 +6,9 @@ export default class MongoRepository implements Repository {
     constructor() {
     }
 
+    getDataSource(): any {
+    }
+
     save<T extends IEntity>(entity: T): void {
         console.log('Save by mongo repository')
     };

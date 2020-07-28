@@ -1,13 +1,13 @@
 import Repository from './../Repository';
 import IEntity from './../IEntity'
-import { Sequelize } from 'sequelize'
+import { Sequelize, Model } from 'sequelize'
 
-export default class PostgresRepository implements Repository {
+export default class PostgresRepository {
 
     private _sequelize: Sequelize
 
-    constructor(datasource: any) {
-        this._sequelize = datasource;
+    constructor() {
+        this._sequelize = new Sequelize('postgres://waterkemper:waterkemper@localhost:5432/heroes');
     }
 
     async isConnected(): Promise<boolean> {
@@ -20,8 +20,12 @@ export default class PostgresRepository implements Repository {
         }
     }
 
-    save<T extends IEntity>(entity: T): void {
-        console.log('Save by mongo repository')
+    getDataSource(): Sequelize {
+        return this._sequelize;
+    }
+
+    async save<T extends Model>(entity: T): Promise<T> {
+        return await entity.save();
     };
     find(id: Number): IEntity | any {
         return {}

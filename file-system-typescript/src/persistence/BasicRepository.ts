@@ -1,16 +1,22 @@
 import Repository from './Repository';
 import IEntity from './IEntity'
+import { Model } from 'sequelize/types';
+import PostgresRepository from './impl/PostgresRepository';
 
-export default class BasicRepository implements Repository {
+export default class BasicRepository {
 
     //private properties at proposal to TC39
-    #repository: Repository;
+    #repository: PostgresRepository;
 
-    constructor(repository: Repository) {
+    constructor(repository: PostgresRepository | any) {
         this.#repository = repository;
     }
 
-    save<T extends IEntity>(entity: T): void {
+    getDataSource(): any {
+        return this.#repository.getDataSource();    
+    }
+
+    save<T extends Model>(entity: T): void {
         this.#repository.save(entity);
     };
     find(id: Number): IEntity {
