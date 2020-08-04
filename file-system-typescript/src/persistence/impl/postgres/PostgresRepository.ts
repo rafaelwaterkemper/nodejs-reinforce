@@ -1,5 +1,5 @@
-import Repository from './../Repository';
-import IEntity from './../IEntity'
+import Repository from '../../Repository';
+import IEntity from '../../IEntity'
 import { Sequelize, Model } from 'sequelize'
 
 export default class PostgresRepository {
@@ -9,7 +9,7 @@ export default class PostgresRepository {
     constructor() {
         this._sequelize = new Sequelize('postgres://waterkemper:waterkemper@localhost:5432/heroes');
     }
-
+    
     async isConnected(): Promise<boolean> {
         try {
             await this._sequelize.authenticate();

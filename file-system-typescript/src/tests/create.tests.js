@@ -13,12 +13,7 @@ describe('Suite test for create operation', () => {
     })
 
     before(async () => {
-        await repository.delete()
-        await repository.save({
-            id: 1,
-            name: "Flash",
-            skill: "Speed"
-        })
+        
     })
 
     it('should read heroe from file', async () => {
@@ -34,7 +29,7 @@ describe('Suite test for create operation', () => {
         deepEqual(EXPECTED, result)
     })
 
-    it('should save new heroe into file', async () => {
+    it.only('should save new heroe into Postgres', async () => {
         
         const newHeroe = {
             "name": "Nodezera",

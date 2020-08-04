@@ -1,7 +1,7 @@
 import Repository from './Repository';
 import IEntity from './IEntity'
 import { Model } from 'sequelize/types';
-import PostgresRepository from './impl/PostgresRepository';
+import PostgresRepository from './impl/postgres/PostgresRepository';
 
 export default class BasicRepository {
 

@@ -28,7 +28,7 @@ interface HeroeAttributes {
 
 interface HeroeCreationAttributes extends Optional<HeroeAttributes, "id"> { }
 
-export const Heroe = class HeroeInstance extends Model<HeroeAttributes, HeroeCreationAttributes>
+export class Heroe extends Model<HeroeAttributes, HeroeCreationAttributes>
     implements HeroeAttributes {
 
     public id!: number;
@@ -55,51 +55,49 @@ export const Heroe = class HeroeInstance extends Model<HeroeAttributes, HeroeCre
     public readonly films?: Films[]; // Note this is optional since it's only populated when explicitly requested in code
 
     public static associations: {
-        films: Association<HeroeInstance, Films>;
+        films: Association<Heroe, Films>;
     };
-}
 
-export const associate = async function(sequelize: Sequelize) {
+    public static async associate(sequelize: Sequelize) {
     
-    await Heroe.init(
-        {
-            id: {
-                type: DataTypes.INTEGER.UNSIGNED,
-                autoIncrement: true,
-                primaryKey: true,
+        await Heroe.init(
+            {
+                id: {
+                    type: DataTypes.INTEGER.UNSIGNED,
+                    autoIncrement: true,
+                    primaryKey: true,
+                },
+                name: {
+                    type: new DataTypes.STRING(128),
+                    allowNull: false,
+                },
+                height: {
+                    type: DataTypes.INTEGER,
+                    allowNull: true,
+                },
+                mass: {
+                    type: DataTypes.INTEGER,
+                    allowNull: true
+                },
+                eyeColor: {
+                    type: DataTypes.ENUM("GREEN", "BLUE"),
+                    allowNull: true
+                }
             },
-            name: {
-                type: new DataTypes.STRING(128),
-                allowNull: false,
-            },
-            height: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
-            },
-            mass: {
-                type: DataTypes.INTEGER,
-                allowNull: true
-            },
-            eyeColor: {
-                type: DataTypes.ENUM("GREEN", "BLUE"),
-                allowNull: true
+            {
+                tableName: "heroes",
+                sequelize, // passing the `sequelize` instance is required
             }
-        },
-        {
-            tableName: "heroes",
-            sequelize, // passing the `sequelize` instance is required
-        }
-    );
-
-    // Here we associate which actually populates out pre-declared `association` static and other methods.
-    await FilmsAssociate(sequelize);
-    await Heroe.hasMany(Films, {
-        sourceKey: "id",
-        foreignKey: "heroeId",
-        as: "films", // this determines the name in `associations`!
-    });
-
-    await Heroe.sync();
-
+        );
     
+        // Here we associate which actually populates out pre-declared `association` static and other methods.
+        await FilmsAssociate(sequelize);
+        await Heroe.hasMany(Films, {
+            sourceKey: "id",
+            foreignKey: "heroeId",
+            as: "films", // this determines the name in `associations`!
+        });
+    
+        await Heroe.sync();
+    }
 }
