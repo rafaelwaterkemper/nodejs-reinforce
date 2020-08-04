@@ -11,7 +11,7 @@ import {
     Optional
 } from 'sequelize'
 
-import { Films, associate as FilmsAssociate} from './Films'
+import { Films} from './Films'
 
 export enum EYECOLOR {
     GREEN = "GREEN",
@@ -91,7 +91,7 @@ export class Heroe extends Model<HeroeAttributes, HeroeCreationAttributes>
         );
     
         // Here we associate which actually populates out pre-declared `association` static and other methods.
-        await FilmsAssociate(sequelize);
+        
         await Heroe.hasMany(Films, {
             sourceKey: "id",
             foreignKey: "heroeId",

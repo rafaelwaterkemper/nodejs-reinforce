@@ -1,6 +1,7 @@
 import Repository from '../../Repository';
 import IEntity from '../../IEntity'
 import { Sequelize, Model } from 'sequelize'
+import InitializerModels from './InitializerModels'
 
 export default class PostgresRepository {
 
@@ -8,6 +9,7 @@ export default class PostgresRepository {
 
     constructor() {
         this._sequelize = new Sequelize('postgres://waterkemper:waterkemper@localhost:5432/heroes');
+        new InitializerModels(this._sequelize);
     }
     
     async isConnected(): Promise<boolean> {

@@ -1,12 +1,8 @@
 import BasicRepository from './persistence/BasicRepository'
-import PostgresRepository from './persistence/impl/PostgresRepository'
-import { Heroe, associate, EYECOLOR } from './model/Heroe'
-import { Model } from 'sequelize'
-import IEntity from './persistence/IEntity'
+import PostgresRepository from './persistence/impl/postgres/PostgresRepository'
+import { Heroe, EYECOLOR } from './model/Heroe'
 
 const basicRepository = new BasicRepository(new PostgresRepository())
-
-associate(basicRepository.getDataSource());
 
 const heroe = Heroe.build({
     name: "Rafael Waterkemper",
