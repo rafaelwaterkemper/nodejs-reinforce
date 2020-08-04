@@ -16,8 +16,8 @@ export default class BasicRepository {
         return this.#repository.getDataSource();    
     }
 
-    save<T extends Model>(entity: T): void {
-        this.#repository.save(entity);
+    async save<T extends Model>(entity: T): Promise<T> {
+        return this.#repository.save(entity);
     };
     find(id: Number): IEntity {
         return this.#repository.find(id)

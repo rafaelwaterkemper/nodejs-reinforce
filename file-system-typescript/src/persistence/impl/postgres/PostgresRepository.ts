@@ -6,12 +6,18 @@ import InitializerModels from './InitializerModels'
 export default class PostgresRepository {
 
     private _sequelize: Sequelize
+    private _initializer: InitializerModels;
 
     constructor() {
         this._sequelize = new Sequelize('postgres://waterkemper:waterkemper@localhost:5432/heroes');
-        new InitializerModels(this._sequelize);
+        this._initializer = new InitializerModels(this._sequelize);
+        
     }
-    
+
+    async init() {
+        await this._initializer.init();
+    }
+
     async isConnected(): Promise<boolean> {
         try {
             await this._sequelize.authenticate();
@@ -27,7 +33,7 @@ export default class PostgresRepository {
     }
 
     async save<T extends Model>(entity: T): Promise<T> {
-        return await entity.save();
+        return entity.save();
     };
     find(id: Number): IEntity | any {
         return {}

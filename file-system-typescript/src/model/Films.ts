@@ -46,5 +46,6 @@ export class Films extends Model<FilmsAttributes, FilmsCreationAttributes>
             }
         )
         Films.sync()
+        console.log('terminou de iniciar films')
     };
 }

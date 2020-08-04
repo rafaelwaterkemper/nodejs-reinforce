@@ -99,5 +99,6 @@ export class Heroe extends Model<HeroeAttributes, HeroeCreationAttributes>
         });
     
         await Heroe.sync();
+        console.log('terminou de iniciar Heroe')
     }
 }
