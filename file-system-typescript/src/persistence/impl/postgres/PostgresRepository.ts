@@ -3,7 +3,7 @@ import IEntity from '../../IEntity'
 import { Sequelize, Model } from 'sequelize'
 import InitializerModels from './InitializerModels'
 
-export default class PostgresRepository {
+export default class PostgresRepository implements Repository {
 
     private _sequelize: Sequelize
     private _initializer: InitializerModels;
@@ -32,8 +32,9 @@ export default class PostgresRepository {
         return this._sequelize;
     }
 
-    async save<T extends Model>(entity: T): Promise<T> {
-        return entity.save();
+    async save<T extends IEntity>(entity: T): Promise<T> {
+        let model = await this._sequelize.models[''].create(entity)
+        return Promise.resolve(entity);
     };
     find(id: Number): IEntity | any {
         return {}
