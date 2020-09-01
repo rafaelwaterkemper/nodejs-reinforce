@@ -28,7 +28,10 @@ async function main() {
     }
   ])
 
-  app.start()
+  await app.start()
+  console.log('Initialized server')
+
+  return app;
 }
 
-main();
+module.exports = main();
