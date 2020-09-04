@@ -1,5 +1,5 @@
 const BaseRoute = require('./BaseRoute')
-const Joi = require('joi')
+const Joi = require('@hapi/joi')
 
 class HeroeRoute extends BaseRoute {
     constructor(db) {
@@ -11,7 +11,7 @@ class HeroeRoute extends BaseRoute {
         return {
             path: '/api/heroes',
             method: 'GET',
-            config: {
+            options: {
                 validate: {
                     failAction: (req, header, err) => {
                         throw err
@@ -19,11 +19,11 @@ class HeroeRoute extends BaseRoute {
                     //payload
                     //headers 
                     //params -> DA url :ID
-                    query: {
-                        skip: Joi.number().integer().default(0),
+                    query: Joi.object({
+                        skip: Joi.number().integer().min(1).max(100).default(10).error(() => new Error('Campo skip deve ser numérico')),
                         limit: Joi.number().integer().default(20),
                         nome: Joi.string().min(3).max(100)
-                    }
+                    }).options({stripUnknown: true})
                 }
             },
             handler: (req, header) => {
@@ -40,13 +40,13 @@ class HeroeRoute extends BaseRoute {
                         }
 
                     return this.db.read(query, skip, limit)
-                        } catch (error) {
-                            console.log('Errowww: ', error)
-                            return 'Erro interno no servidor'
-                        }
+                } catch (error) {
+                    console.log('Errowww: ', error)
+                    return 'Erro interno no servidor'
                 }
-        }
-        }
+            }
     }
+}
+}
 
 module.exports = HeroeRoute;
