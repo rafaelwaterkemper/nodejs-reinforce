@@ -14,21 +14,28 @@ const MOCK_CADASTRAR_HEROI = {
     poder: 'change de time'
 }
 
+MOCK_ID = ''
+
 var app = {}
 describe('should test api', function () {
     this.beforeAll(async () => {
         app = await api
+        const preCreate = await app.inject({
+            url: '/api/heroes',
+            method: 'POST',
+            payload: MOCK_CADASTRAR_HEROI
+        })
+        const { _id } = JSON.parse(preCreate.payload)
+        MOCK_ID = _id 
     })
 
     this.afterAll(async () => {
         let goOut = await app.stop()
-        console.log('hapi server stopped')
         setTimeout(()=> process.exit((goOut) ? 1 : 0), 2000)
     })
 
     it('should return a heroe', async () => {
         const response = await get(URL)
-        console.log('TESTANDO')
         let { nome, poder } = response.data[0];
         
         assert.deepEqual(MOCK_HEROI_CADASTRADO, { nome, poder })
@@ -54,10 +61,31 @@ describe('should test api', function () {
         })
 
         const heroe = JSON.parse(response.payload)
-        console.log(JSON.stringify(heroe))
         assert.ok(heroe._id)
         assert.ok(response.statusCode, 202)
     })
 
-    
+    it('PATCH should update a heroe', async() => {
+        const CHANGES = {
+            nome: 'Gavião alterado'
+        }
+
+        const response = await app.inject({
+            url: `/api/heroes/${MOCK_ID}`,
+            method: 'PATCH',
+            payload: CHANGES
+        })
+
+        assert.ok(response.statusCode, 200)
+    })
+
+    it('DELETE should delete a heroe', async () => {
+        const response = await app.inject({
+            url: `/api/heroes/${MOCK_ID}`,
+            method: 'DELETE'
+        })
+
+        assert.deepStrictEqual(response.statusCode, 200)
+    })
+
 })

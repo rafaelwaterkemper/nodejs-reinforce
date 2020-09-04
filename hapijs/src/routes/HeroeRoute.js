@@ -1,5 +1,7 @@
 const BaseRoute = require('./BaseRoute')
 const Joi = require('@hapi/joi')
+const Boom = require('boom')
+const { error } = require('console')
 
 class HeroeRoute extends BaseRoute {
     constructor(db) {
@@ -71,6 +73,49 @@ class HeroeRoute extends BaseRoute {
                 } catch (err) {
                     console.log('Erro', err)
                     return 'Error to save a new hero'
+                }
+            }
+        }
+    }
+
+    delete() {
+        return {
+            path: '/api/heroes/{id}',
+            method: 'DELETE',
+            handler: async (req, headers) => {
+                const { id } = req.params
+
+                try {
+                    const operation = await this.db.delete(id)
+                    console.log(`Operacao delete ${JSON.stringify(operation)}`)
+                    if(operation.ok !== 1) return Boom.notFound('Id não localizado')
+                    return 'Removido';
+                } catch(err) {
+                    console.log('error ', err)
+                    return Boom.internal();
+                }
+            }
+        }
+    }
+
+    update() {
+        return {
+            path: '/api/heroes/{id}',
+            method: 'PATCH',
+            handler: async (req, headers) => {
+                const { id } = req.params
+                const { payload } = req
+                
+                const dadosString = JSON.stringify(payload)
+                const dados = JSON.parse(dadosString)
+
+                try {
+                    const operation = await this.db.update(id, dados)
+                    if(operation.nModified !== 1) return Boom.notFound('Id não localizado')
+                    return 'Alterado';
+                } catch(err) {
+                    console.log('error ', err)
+                    return Boom.internal();
                 }
             }
         }
