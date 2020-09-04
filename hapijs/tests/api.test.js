@@ -8,6 +8,12 @@ const MOCK_HEROI_CADASTRADO = {
     nome: 'Gaviao Negro',
     poder: 'flexas'
 };
+
+const MOCK_CADASTRAR_HEROI = {
+    nome: `Heroe at time ${new Date().toLocaleString()}`,
+    poder: 'change de time'
+}
+
 var app = {}
 describe('should test api', function () {
     this.beforeAll(async () => {
@@ -38,6 +44,19 @@ describe('should test api', function () {
 
         assert.equal(response.statusCode, 200)
         assert.ok(Array.isArray(data))
+    })
+
+    it('save heroe', async() => {
+        const response = await app.inject({
+            url: '/api/heroes',
+            method: 'POST',
+            payload: MOCK_CADASTRAR_HEROI
+        })
+
+        const heroe = JSON.parse(response.payload)
+        console.log(JSON.stringify(heroe))
+        assert.ok(heroe._id)
+        assert.ok(response.statusCode, 202)
     })
 
     
