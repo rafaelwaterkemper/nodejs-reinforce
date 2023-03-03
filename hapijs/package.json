@@ -9,7 +9,7 @@
   "author": "erickwendel",
   "license": "ISC",
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^10.2.0"
   },
   "dependencies": {
     "@hapi/hapi": "^18.3.2",
